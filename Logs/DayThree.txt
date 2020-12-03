@@ -1,0 +1,22 @@
+2020-12-03 12:55:52.998 +01:00 [INF] Today trying : (DayThree) DayThree
+2020-12-03 12:55:53.033 +01:00 [INF] Found 323 lines
+2020-12-03 12:55:53.034 +01:00 [INF]    Lane width is 31
+2020-12-03 12:55:53.035 +01:00 [INF] Hit 90 trees with [1, 1]
+2020-12-03 12:55:53.035 +01:00 [INF] Hit 278 trees with [3, 1]
+2020-12-03 12:55:53.035 +01:00 [INF] Hit 88 trees with [5, 1]
+2020-12-03 12:55:53.035 +01:00 [INF] Hit 98 trees with [7, 1]
+2020-12-03 12:55:53.035 +01:00 [INF] Hit 45 trees with [1, 2]
+2020-12-03 12:55:53.035 +01:00 [INF] Execution returned: 
+   Result is 9709761600
+
+2020-12-03 12:55:55.252 +01:00 [INF] Today trying : (DayThree) DayThree
+2020-12-03 12:55:55.292 +01:00 [INF] Found 323 lines
+2020-12-03 12:55:55.292 +01:00 [INF]    Lane width is 31
+2020-12-03 12:55:55.293 +01:00 [INF] Hit 90 trees with [1, 1]
+2020-12-03 12:55:55.293 +01:00 [INF] Hit 278 trees with [3, 1]
+2020-12-03 12:55:55.293 +01:00 [INF] Hit 88 trees with [5, 1]
+2020-12-03 12:55:55.293 +01:00 [INF] Hit 98 trees with [7, 1]
+2020-12-03 12:55:55.293 +01:00 [INF] Hit 45 trees with [1, 2]
+2020-12-03 12:55:55.293 +01:00 [INF] Execution returned: 
+   Result is 9709761600
+

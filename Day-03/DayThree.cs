@@ -13,7 +13,7 @@ namespace AdventOfCode
         {
             var data = await ((IDay)this).LoadData();
             var dataLines = data.Split(Environment.NewLine).ToArray();
-            Console.WriteLine($"Found {dataLines.Length} lines");
+            Logger.Information($"Found {dataLines.Length} lines");
             int laneWidth = dataLines[0].Length;
             var occurences = new List<SlopeRide>()
             {
@@ -24,7 +24,7 @@ namespace AdventOfCode
                 new SlopeRide() { yPositionIncrease = 2, xPositionIncrease = 1, xPosition = 1
                  }
             };
-            Console.WriteLine($"   Lane width is {laneWidth}");
+            Logger.Information($"   Lane width is {laneWidth}");
             
             for(var first = 1; first < dataLines.Length; first++)
             {
@@ -41,7 +41,7 @@ namespace AdventOfCode
                 }                
             }
                 
-            occurences.ForEach(x => Console.WriteLine($"Hit {x.NumberOfTreesHit} trees with [{x.xPositionIncrease}, {x.yPositionIncrease}]"));  
+            occurences.ForEach(x => Logger.Information($"Hit {x.NumberOfTreesHit} trees with [{x.xPositionIncrease}, {x.yPositionIncrease}]"));  
             double result = ((double)occurences[0].NumberOfTreesHit)
                 * ((double)occurences[1].NumberOfTreesHit)
                 * ((double)occurences[2].NumberOfTreesHit)

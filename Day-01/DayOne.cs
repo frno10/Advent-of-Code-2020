@@ -16,18 +16,18 @@ namespace AdventOfCode
         {
             var data = await ((IDay)this).LoadData();
             var dataLines = data.Split(Environment.NewLine).Select(x => int.Parse(x)).ToArray();
-            Console.WriteLine($"Found {dataLines.Length} lines");
+            Logger.Information($"Found {dataLines.Length} lines");
             int resultForTwo = 0, resultForThree = 0;
 
             for(var first = 0; first < dataLines.Length; first++)
             {
-                // Console.WriteLine($"   Comparing {dataLines[first]} with the rest");
+                Logger.Debug($"   Comparing {dataLines[first]} with the rest");
 
                 for(var second = first + 1; second < dataLines.Length; second++)
                 {
                     if(dataLines[first] + dataLines[second] == 2020)
                     {
-                        Console.WriteLine($"Found result for 2: {dataLines[first]} and {dataLines[second]} ");
+                        Logger.Information($"Found result for 2: {dataLines[first]} and {dataLines[second]} ");
                         resultForTwo = dataLines[first] * dataLines[second];
 
                         if(resultForTwo > 0 && resultForThree > 0)
@@ -40,7 +40,7 @@ namespace AdventOfCode
                     {
                         if(dataLines[first] + dataLines[second] + dataLines[third] == 2020)
                         {
-                            Console.WriteLine($"Found result for 3: {dataLines[first]} and {dataLines[second]} and {dataLines[third]}");
+                            Logger.Information($"Found result for 3: {dataLines[first]} and {dataLines[second]} and {dataLines[third]}");
                             resultForThree = dataLines[first] * dataLines[second] * dataLines[third];
 
                             if(resultForTwo > 0 && resultForThree > 0)

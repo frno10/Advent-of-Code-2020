@@ -30,7 +30,7 @@ namespace AdventOfCode
             }
             if(File.Exists(dataFilePath))
             {
-                Console.WriteLine($"Found data file at {dataFilePath}");
+                Logger.Debug($"Found data file at {dataFilePath}");
                 return await File.ReadAllTextAsync(dataFilePath);
             }
             return "";

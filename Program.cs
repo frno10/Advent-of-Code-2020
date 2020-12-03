@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BenchmarkDotNet.Running;
+using Serilog;
 
 namespace AdventOfCode
 {
-    class Program
+    public class Program
     {
         static async Task Main(string[] args)
         {
@@ -15,6 +16,11 @@ namespace AdventOfCode
             string name = IntToNameConverter.Convert(number);
             string className = "Day" + name.ToTitleCase().ToClassname();
 
+            Log.Logger = new LoggerConfiguration()
+                    .WriteTo.Console()
+                    .WriteTo.File($"Logs/{className}.txt")
+                    .CreateLogger();
+
             try
             {
                 var day = (IDay)Activator.CreateInstance(null, $"AdventOfCode.{className}")?.Unwrap();
@@ -22,12 +28,14 @@ namespace AdventOfCode
                 // BenchmarkRunner.Run(day.GetType());
 
                 var dayName = day?.GetType().Name ?? "was null";
-                Console.WriteLine($"Today trying : ({className}) {dayName}{Environment.NewLine}");
-                Console.WriteLine($"Execution returned: {Environment.NewLine}   {await day.Execute()}");
+                Logger.Information($"Today trying : ({className}) {dayName}");
+                Logger.Information($"Execution returned: {Environment.NewLine}   {await day.Execute()}{Environment.NewLine}");
+
+                
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Day not found{Environment.NewLine}{e.Message}");
+                Logger.Information($"Day not found{Environment.NewLine}{e.Message}");
             }            
         }
     }

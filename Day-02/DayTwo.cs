@@ -12,12 +12,12 @@ namespace AdventOfCode
         {
             var data = await ((IDay)this).LoadData();
             var dataLines = data.Split(Environment.NewLine).ToArray();
-            Console.WriteLine($"Found {dataLines.Length} lines");
+            Logger.Information($"Found {dataLines.Length} lines");
             int numberOfCorrectPasswords = 0, numberOfCorrectNewPasswords = 0;
 
             for(var first = 0; first < dataLines.Length; first++)
             {
-                Console.WriteLine($"Considering following: {dataLines[first]}");
+                Logger.Debug($"Considering following: {dataLines[first]}");
                 var (Min, Max) = GetMinMaxOccurences(dataLines[first]);
                 var letterToFind = GetLetterToFind(dataLines[first]);
 
@@ -25,7 +25,7 @@ namespace AdventOfCode
                 var occurences = valueToConsider.Count(x => x == letterToFind);
                 if(occurences >= Min && occurences <= Max)
                 {
-                    Console.WriteLine($"   Its a correct password !");
+                    Logger.Debug($"   Its a correct password !");
                     numberOfCorrectPasswords++;
                 }
                 if((valueToConsider[Min - 1] == letterToFind && valueToConsider[Max - 1] != letterToFind)
@@ -41,14 +41,14 @@ namespace AdventOfCode
         private (int Min,int Max) GetMinMaxOccurences(string inputString)
         {
             string[] dataSplit = inputString.Split(' ')[0].Split('-');
-            Console.WriteLine($"   Found range: from {dataSplit[0]} to {dataSplit[1]}");
+            Logger.Debug($"   Found range: from {dataSplit[0]} to {dataSplit[1]}");
             return (int.Parse(dataSplit[0]), int.Parse(dataSplit[1]));
         }
 
         private char GetLetterToFind(string inputString)
         {
             char foundChar = inputString.Split(' ')[1][0];
-            Console.WriteLine($"   Found character: {foundChar}");
+            Logger.Debug($"   Found character: {foundChar}");
             return foundChar;
         }
     }
