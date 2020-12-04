@@ -17,6 +17,7 @@ namespace AdventOfCode
             string className = "Day" + name.ToTitleCase().ToClassname();
 
             Log.Logger = new LoggerConfiguration()
+                    //.MinimumLevel.Debug()
                     .WriteTo.Console()
                     .WriteTo.File($"Logs/{className}.txt")
                     .CreateLogger();

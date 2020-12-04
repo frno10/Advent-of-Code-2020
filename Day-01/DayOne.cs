@@ -44,9 +44,9 @@ namespace AdventOfCode
                             resultForThree = dataLines[first] * dataLines[second] * dataLines[third];
 
                             if(resultForTwo > 0 && resultForThree > 0)
-                        {
-                            return $"Results are: for 2: {resultForTwo}, for 3: {resultForThree}";
-                        }
+                            {
+                                return $"Results are: for 2: {resultForTwo}, for 3: {resultForThree}";
+                            }
                         }
                     }
                 }    
