@@ -23,17 +23,15 @@ namespace AdventOfCode
             {
                 var day = (IDay)Activator.CreateInstance(null, $"AdventOfCode.{className}")?.Unwrap();
 
-                // BenchmarkRunner.Run(day.GetType());
-
                 var dayName = day?.GetType().Name ?? "was null";
                 Logger.Information($"Today trying : ({className}) {dayName}");
-                Logger.Information($"Execution returned: {Environment.NewLine}   {await day.Execute()}{Environment.NewLine}");
-
                 
+                // BenchmarkRunner.Run(day.GetType());
+                Logger.Information($"Execution returned: {Environment.NewLine}   {await day.Execute()}{Environment.NewLine}");
             }
             catch (Exception e)
             {
-                Logger.Information($"Day not found{Environment.NewLine}{e.Message}");
+                Logger.Information($"Day not found or other issue:{Environment.NewLine}   {e.Message}{Environment.NewLine}{e.StackTrace}");
             }            
         }
 
