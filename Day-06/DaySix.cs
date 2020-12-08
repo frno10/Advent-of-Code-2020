@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode
 {
-    class DaySix : IDay
+    public class DaySix : IDay
     {
         public int NumberOfExecutions { get; set; }
 
