@@ -9,66 +9,99 @@ namespace AdventOfCode
     {
         public int NumberOfExecutions { get; set; }
 
+        private Processor processor = null;
+        private int firstPartValue = 0;
+        private string[] DataLines;
+
         public async Task<string> Execute()
         {
             var data = await ((IDay)this).LoadData();
-            var dataLines = data.Split($"{Environment.NewLine}", StringSplitOptions.RemoveEmptyEntries).ToArray();
-            bool isAttamptingSwitch = false;
+            var DataLines = data.Split($"{Environment.NewLine}", StringSplitOptions.RemoveEmptyEntries).ToArray();
 
-            var visitedIndexed = new List<int>();
-            var currentIndex = 0;
-            long accValue = 0;
-            (int Index, long Value, List<int> VisitedIndexes) lastSwitchLocation = (0, 0, new List<int>());
-
-            while(true)
+            for(int i = 0; i < 2; i++)
             {
-                visitedIndexed.Add(currentIndex);
-                var lineSplit = dataLines[currentIndex].Split(" ");
-                (string instruction, int value) = (lineSplit[0], int.Parse(lineSplit[1]));
+                processor = new Processor();
+                while(true)
+                {
+                    processor.MoveToNextStep(DataLines);
+                    CheckIfCurrentInstructionShouldSwitch(processor.Current.Instruction);
 
-                if(!isAttamptingSwitch && (instruction == "jmp" || instruction == "nop" ))
-                {
-                    isAttamptingSwitch = true;
-                    lastSwitchLocation = (currentIndex, accValue, visitedIndexed.Select(x => x).ToList());
-                    instruction = instruction == "jmp" ? "nop" : "jmp";
-                    Logger.Information($"switching to {instruction} on index {currentIndex}");
-                }
-                else if(isAttamptingSwitch && currentIndex == lastSwitchLocation.Index)
-                {
-                    Logger.Information($"- resetting {isAttamptingSwitch} -");
-                    isAttamptingSwitch = false;
-                }
+                    Logger.Debug($"[{firstPartValue}] {processor.Current.Instruction} {processor.Current.Value} | {processor.AccValue} | {processor.VisitedIndexed.Count} | {processor.CurrentIndex}");
+                    if(processor.Current.Instruction == "acc")
+                    {
+                        processor.AccValue += processor.Current.Value;
+                        processor.CurrentIndex++;
+                    }
+                    if(processor.Current.Instruction == "jmp")
+                    {
+                        processor.CurrentIndex += processor.Current.Value;
+                    }
+                    if(processor.Current.Instruction == "nop")
+                    {
+                        processor.CurrentIndex++;
+                    }
 
-                Logger.Information($"{instruction} {value} | {accValue} | {visitedIndexed.Count} | {currentIndex}");
-                if(instruction == "acc")
-                {
-                    accValue += value;
-                    currentIndex++;
-                }
-                if(instruction == "jmp")
-                {
-                    currentIndex += value;
-                }
-                if(instruction == "nop")
-                {
-                    currentIndex++;
-                }
+                    if(processor.VisitedIndexed.Contains(processor.CurrentIndex))
+                    {
+                        if(firstPartValue == 0)
+                        {
+                            firstPartValue = (int)processor.AccValue;
+                            break;
+                        }
+                        ResetToLastKnownSwitchLocation();
+                    }
 
-                if(visitedIndexed.Contains(currentIndex))
-                {
-                    Logger.Information($"existing index {currentIndex}!!!");
-                    currentIndex = lastSwitchLocation.Index;
-                    accValue = lastSwitchLocation.Value;
-                    visitedIndexed = lastSwitchLocation.VisitedIndexes;
-                }
-
-                if(currentIndex >= dataLines.Length)
-                {
-                    break;
+                    if(processor.CurrentIndex >= DataLines.Length)
+                    {
+                        break;
+                    }
                 }
             }
+            return $"Before repeating instruction acc equals to {firstPartValue}, value after program fix is {processor.AccValue}";            
+        }
 
-            return $"Before repeating instruction acc equals to {accValue}";            
+        private void CheckIfCurrentInstructionShouldSwitch(string instruction)
+        {
+            if(firstPartValue > 0)
+            {
+                if(!processor.IsAttamptingSwitch && (instruction == "jmp" || instruction == "nop" ))
+                {
+                    processor.IsAttamptingSwitch = true;
+                    processor.LastSwitchLocation = (processor.CurrentIndex, processor.AccValue, processor.VisitedIndexed.Select(x => x).ToList());
+                    processor.Current = ((processor.Current.Instruction == "jmp" ? "nop" : "jmp"), processor.Current.Value);
+                    Logger.Debug($"switching to {instruction} on index {processor.CurrentIndex}");
+                }
+                else if(processor.IsAttamptingSwitch && processor.CurrentIndex == processor.LastSwitchLocation.Index)
+                {
+                    Logger.Debug($"- resetting {processor.IsAttamptingSwitch} -");
+                    processor.IsAttamptingSwitch = false;
+                }
+            }
+        }
+
+        private void ResetToLastKnownSwitchLocation()
+        {
+            Logger.Debug($"existing index {processor.CurrentIndex}!!!");
+            processor.CurrentIndex = processor.LastSwitchLocation.Index;
+            processor.AccValue = processor.LastSwitchLocation.Value;
+            processor.VisitedIndexed = processor.LastSwitchLocation.VisitedIndexes;
+        }
+
+        public class Processor 
+        {
+            public (string Instruction, int Value) Current { get; set; }
+            public bool IsAttamptingSwitch { get; set; }
+            public List<int> VisitedIndexed { get; set; } = new List<int>();
+            public int CurrentIndex { get; set; } = 0;
+            public long AccValue { get; set; } = 0;
+            public (int Index, long Value, List<int> VisitedIndexes) LastSwitchLocation { get; set; } = (0, 0, new List<int>());
+
+            public void MoveToNextStep(string[] dataLines)
+            {
+                VisitedIndexed.Add(CurrentIndex);
+                var lineSplit = dataLines[CurrentIndex].Split(" ");
+                Current = (lineSplit[0], int.Parse(lineSplit[1]));
+            }
         }
     }
 }

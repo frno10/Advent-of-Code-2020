@@ -8,13 +8,14 @@ namespace AdventOfCode
 {
     public class DayOne : IDay
     {
-        [Params(1000, 10000)]
+        [Params(100, 1000)]
         public int NumberOfExecutions { get;set; }
 
         [Benchmark]
         public async Task<string> Execute()
         {
             var data = await ((IDay)this).LoadData();
+            Logger.Debug($"Data length: {data.Length}");
             var dataLines = data.Split(Environment.NewLine).Select(x => int.Parse(x)).ToArray();
             Logger.Information($"Found {dataLines.Length} lines");
             int resultForTwo = 0, resultForThree = 0;
