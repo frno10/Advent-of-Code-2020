@@ -11,7 +11,6 @@ namespace AdventOfCode
 
         private Processor processor = null;
         private int firstPartValue = 0;
-        private string[] DataLines;
 
         public async Task<string> Execute()
         {

@@ -73,6 +73,9 @@ namespace AdventOfCode
 
             switch(numberProcessed)
             {
+                case 10:
+                    result = "ten";
+                    break;
                 case 11:
                     result = "eleven";
                     break;

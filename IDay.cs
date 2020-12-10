@@ -20,6 +20,8 @@ namespace AdventOfCode
         async Task<string> LoadData()
         {
             var dataFilePath = DataFileName;
+            Logger.Information($"Looking for data file begins");
+
             if(!File.Exists(DataFileName))
             {
                 var files = Directory.GetFiles(Environment.CurrentDirectory, DataFileName, new EnumerationOptions() 
@@ -28,12 +30,33 @@ namespace AdventOfCode
                 });
                 dataFilePath = (bool)(files?.Any()) ? files.First() : DataFileName;
             }
+            if(!File.Exists(dataFilePath))
+            {
+                var dirPath = Directory.GetCurrentDirectory();
+                var dirInfo = new DirectoryInfo(dirPath);
+
+                while(!File.Exists(dataFilePath) && dirInfo.Parent != null)
+                {
+                    Logger.Information($"Trying to load data in {dirPath}");
+
+                    var files = Directory.GetFiles(dirPath, DataFileName);
+                    if(files.Any())
+                    {
+                        dataFilePath = files.First();
+                    }
+                    else
+                    {
+                        dirPath = dirInfo.Parent?.FullName;
+                        dirInfo = new DirectoryInfo(dirPath);
+                    }
+                }
+            }
             if(File.Exists(dataFilePath))
             {
-                Logger.Debug($"Found data file at {dataFilePath}");
+                Logger.Information($"Found data file at {dataFilePath}");
                 return await File.ReadAllTextAsync(dataFilePath);
             }
-            return "";
+            return ""; //$"1{Environment.NewLine}2";
         } 
     }
 }
