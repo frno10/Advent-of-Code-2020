@@ -27,23 +27,23 @@ namespace AdventOfCode
 
             orderedAndParsedData.Insert(0, 0);
             var multipliers = new List<int>();
-            var list2 = orderedAndParsedData.Select((x, index) => 
+            var removableNumbersList = orderedAndParsedData.Select((x, index) => 
                 (x > 0 && x < orderedAndParsedData.Last() && x + 1 == orderedAndParsedData[index+1] && x - 1 == orderedAndParsedData[index-1]) ? 1 : 0)
                 .ToList();
 
-            Logger.Information(string.Join("-", list2));
+            Logger.Information(string.Join("-", removableNumbersList));
             
-            List<int> list3 = new List<int>() { 0 };
-            for(int i = 0; i < list2.Count(); i++)
+            List<int> groupedRemovableNumbersList = new List<int>() { 0 };
+            for(int i = 0; i < removableNumbersList.Count(); i++)
             {
-                if(list2[i] == 1)
-                    list3[list3.Count - 1]++;
+                if(removableNumbersList[i] == 1)
+                    groupedRemovableNumbersList[groupedRemovableNumbersList.Count - 1]++;
                 else 
-                    list3.Add(0);
+                    groupedRemovableNumbersList.Add(0);
             }
-            Logger.Information(string.Join("-", list3));
+            Logger.Information(string.Join("-", groupedRemovableNumbersList));
             double result = 1;
-            list3
+            groupedRemovableNumbersList
                 .Select(x => (int)Math.Pow(2, x))
                 .Select(x => x == 8 ? 7 : x)
                 .Where(x => x != 0)
